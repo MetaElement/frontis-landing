@@ -286,11 +286,11 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 .hero__grid-overlay{
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background-image:
-    linear-gradient(to right, oklch(1 0 0 / 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 0.025) 1px, transparent 1px);
+    linear-gradient(to right, oklch(1 0 0 / 0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 0.018) 1px, transparent 1px);
   background-size: 80px 80px;
-  mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 30% 40%, black 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 50% at 25% 35%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 25% 35%, black 30%, transparent 80%);
 }
 
 .hero__rail{
@@ -1199,12 +1199,19 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 (function(){
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Hero canvas: brand-glyph echo ----------
-     Mirrors the Frontis horizontal logo geometry:
-       outline circle  =  the contained state
-       filled half-disc (lower) = before-state mass
-       cyan horizontal Edge bleeds across the entire hero
-     One-shot draw, no animation loop, no gradients, no particles.
+  /* ---------- Hero canvas: precision density profile ----------
+     Industrial readout aesthetic — like a spectrum analyzer / seismic plot
+     / CAD measurement chart. No circles, no curves, no decorative motion.
+
+     Layout:
+       · top tick row (calibration scale, after-state)
+       · cyan Edge horizontally bleeding across @ ~32% from top (the datum)
+       · vertical density bars below the Edge (before-state mass)
+         — heights derived from a deterministic sine combination
+         — hard-cut rectangles, no anti-aliased gradients
+       · bottom mono numeric labels (00 / 08 / 16 / 24 ...)
+       · single "MAX" callout on the tallest bar
+     One-shot draw on resize, no animation loop.
      ---------------------------------------------------- */
   const canvas = document.getElementById('heroCanvas');
   if (canvas){
@@ -1218,70 +1225,141 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
       draw();
     }
 
+    /* deterministic density profile — combination of sines so it's organic
+       but never random and never animates */
+    function densityAt(x){
+      return 0.34
+        + 0.26 * Math.sin(x * 0.62 + 1.20)
+        + 0.18 * Math.sin(x * 1.34 - 0.55)
+        + 0.11 * Math.sin(x * 2.18 + 2.80)
+        + 0.07 * Math.sin(x * 4.71 - 1.55);
+    }
+
     function draw(){
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0,0,w,h);
 
-      // Background — Quantum Black per VI (#0A0A0A)
+      // Background — Quantum Black
       ctx.fillStyle = '#0A0A0A';
       ctx.fillRect(0,0,w,h);
 
-      // Geometry — large brand glyph anchored bottom-left, bleeding off-canvas
-      const r = Math.min(w, h) * 0.42;
-      const cx = w * 0.30;
-      const cy = h * 0.62;
-
-      // 1) Outline circle (the contained state) — white stroke, thin like brand mark
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-      ctx.lineWidth = 2 * dpr;
-      ctx.stroke();
-
-      // 2) Filled lower semicircle (before-state mass) — subtle white fill
-      //    The brand asset uses solid black, but on a black bg we use translucent
-      //    white to keep it perceptible without breaking dark-first hierarchy
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI, false);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(255,255,255,0.045)';
-      ctx.fill();
-
-      // 3) Faint inner concentric structure rings (precision feel — Linear)
-      const innerRings = [
-        { r: r * 0.62, alpha: 0.04 },
-        { r: r * 0.42, alpha: 0.05 },
-        { r: r * 0.22, alpha: 0.07 },
-      ];
-      innerRings.forEach(ring => {
-        ctx.beginPath();
-        ctx.arc(cx, cy, ring.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,255,255,${ring.alpha})`;
-        ctx.lineWidth = 1 * dpr;
-        ctx.stroke();
-      });
-
-      // 4) THE EDGE — cyan horizontal line bleeds across full width
-      //    Sits on the circle's vertical centre so the brand glyph is "cut in half"
-      //    Stroke 4px to match topbar token (--accent-topbar)
-      ctx.fillStyle = '#00C1D4';
-      ctx.fillRect(0, cy - 2 * dpr, w, 4 * dpr);
-
-      // 5) Density ticks along the bottom (before-zone density)
-      ctx.fillStyle = 'rgba(255,255,255,0.16)';
-      const tickCount = 72;
-      for (let i = 0; i < tickCount; i++){
-        const x = (w / tickCount) * i;
-        const tH = (i % 6 === 0) ? 10 * dpr : (i % 2 === 0 ? 5 * dpr : 3 * dpr);
-        ctx.fillRect(x, h - tH, 1 * dpr, tH);
+      // ---- TOP CALIBRATION SCALE ----------------------------------
+      // Fine ruler ticks on the very top, like a precision instrument edge.
+      const topY = 18 * dpr;
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(0, topY, w, 1 * dpr);
+      const topTicks = 96;
+      for (let i = 0; i <= topTicks; i++){
+        const x = (w / topTicks) * i;
+        const tH = (i % 12 === 0) ? 9 * dpr : (i % 4 === 0 ? 5 * dpr : 2 * dpr);
+        ctx.fillStyle = (i % 12 === 0) ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.20)';
+        ctx.fillRect(x, topY, 1 * dpr, tH);
       }
 
-      // 6) Single 12px Energy Orange peak node — placed on the Edge,
-      //    one per composition per brand rule (and the CTA's peak is the other,
-      //    technically two appearances, but the canvas one is at large scale,
-      //    the CTA one at micro scale — they don't compete visually)
-      //    To stay strictly "one peak per layout", we omit the canvas orange
-      //    and rely on the CTA peak only.
+      // ---- THE EDGE (cyan datum) -----------------------------------
+      // Positioned in the lower third — bars sit BELOW the Edge
+      // (before-state mass), upper 65% of the canvas stays open
+      // (after-state clarity) where the headline lives.
+      const edgeY = Math.floor(h * 0.66);
+      ctx.fillStyle = '#00C1D4';
+      ctx.fillRect(0, edgeY, w, 4 * dpr);
+
+      // small cyan "datum" tick markers above the Edge — every 8th column
+      ctx.fillStyle = '#00C1D4';
+      const datumTicks = 8;
+      for (let i = 0; i < datumTicks; i++){
+        const x = (w / datumTicks) * (i + 0.5);
+        ctx.fillRect(x, edgeY - 8 * dpr, 1 * dpr, 8 * dpr);
+      }
+
+      // ---- VERTICAL SCHEMATIC GUIDES (above the Edge, very faint) -
+      // Thin ruled lines anchoring the upper after-state zone in
+      // engineering grammar without filling it with imagery.
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      const guideCount = 12;
+      for (let i = 1; i < guideCount; i++){
+        const x = Math.floor((w / guideCount) * i);
+        ctx.fillRect(x, topY + 12 * dpr, 1 * dpr, edgeY - topY - 16 * dpr);
+      }
+
+      // ---- DENSITY BARS (below the Edge — before-state mass) -----
+      const barAreaTop    = edgeY + 4 * dpr;
+      const barAreaBottom = h - 60 * dpr;        // reserve room for labels
+      const barAreaHeight = barAreaBottom - barAreaTop;
+
+      const barCount = Math.max(60, Math.floor(w / (10 * dpr)));
+      const gap      = 2 * dpr;
+      const barW     = (w - gap * (barCount - 1)) / barCount;
+
+      let maxBarIndex = 0, maxBarHeight = 0;
+      const heights = [];
+      for (let i = 0; i < barCount; i++){
+        const t = (i / (barCount - 1)) * 8;     // sample range
+        const v = Math.max(0.05, Math.min(0.96, densityAt(t)));
+        const bh = v * barAreaHeight;
+        heights.push(bh);
+        if (bh > maxBarHeight){ maxBarHeight = bh; maxBarIndex = i; }
+      }
+
+      for (let i = 0; i < barCount; i++){
+        const x = i * (barW + gap);
+        const bh = heights[i];
+        // base bar: structure grey
+        ctx.fillStyle = (i === maxBarIndex)
+          ? 'rgba(255,255,255,0.78)'              // max bar = high contrast
+          : 'rgba(255,255,255,0.18)';
+        ctx.fillRect(x, barAreaBottom - bh, barW, bh);
+
+        // 1px cyan top tip on every 8th bar — precision marker
+        if (i % 8 === 0 && i !== maxBarIndex){
+          ctx.fillStyle = 'rgba(0,193,212,0.85)';
+          ctx.fillRect(x, barAreaBottom - bh, barW, 1 * dpr);
+        }
+      }
+
+      // ---- MAX CALLOUT ---------------------------------------------
+      // Local annotation pinned just above the Edge (not full-canvas)
+      const maxX = maxBarIndex * (barW + gap);
+      const maxY = barAreaBottom - maxBarHeight;
+      // small filled cap on the max bar
+      ctx.fillStyle = '#00C1D4';
+      ctx.fillRect(maxX - 2 * dpr, maxY - 3 * dpr, barW + 4 * dpr, 1 * dpr);
+      // short dotted leader from max bar up to just above Edge
+      ctx.fillStyle = 'rgba(0,193,212,0.55)';
+      const leaderEndY = edgeY - 18 * dpr;
+      const leaderSeg = 3 * dpr;
+      let ly = maxY - 6 * dpr;
+      while (ly > leaderEndY){
+        ctx.fillRect(maxX + barW / 2, ly, 1 * dpr, 2 * dpr);
+        ly -= leaderSeg;
+      }
+      // "MAX 0.92" label sitting just above the Edge
+      ctx.fillStyle = 'rgba(0,193,212,0.95)';
+      ctx.font = `${10 * dpr}px "Space Mono", "JetBrains Mono", ui-monospace, monospace`;
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('MAX · 0.92', maxX + barW + 6 * dpr, leaderEndY + 2 * dpr);
+
+      // ---- BOTTOM NUMERIC LABELS ----------------------------------
+      ctx.fillStyle = 'rgba(255,255,255,0.30)';
+      ctx.font = `${9 * dpr}px "Space Mono", "JetBrains Mono", ui-monospace, monospace`;
+      const labelSlots = 12;
+      for (let i = 0; i < labelSlots; i++){
+        const x = (w / labelSlots) * i + 6 * dpr;
+        const num = String(i * 8).padStart(2, '0');
+        ctx.fillText(num, x, h - 28 * dpr);
+      }
+
+      // ---- BOTTOM CAPTION RAIL ------------------------------------
+      ctx.fillStyle = 'rgba(255,255,255,0.40)';
+      ctx.font = `${9 * dpr}px "Space Mono", "JetBrains Mono", ui-monospace, monospace`;
+      ctx.fillText('FRONTIS · DENSITY READOUT', 8 * dpr, h - 12 * dpr);
+      const rightLabel = 'SAGE v4.2 / 2026.05';
+      const rightW = ctx.measureText(rightLabel).width;
+      ctx.fillText(rightLabel, w - rightW - 8 * dpr, h - 12 * dpr);
+
+      // bottom hairline
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillRect(0, h - 22 * dpr, w, 1 * dpr);
     }
 
     window.addEventListener('resize', resize, { passive: true });
