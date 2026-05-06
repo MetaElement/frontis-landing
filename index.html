@@ -233,16 +233,12 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   border-bottom: 1px solid var(--border);
 }
 .nav__brand{
-  display: inline-flex; align-items: center; gap: 12px;
-  font-weight: 700; letter-spacing: -0.005em;
-  font-size: var(--text-base);
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  display: inline-flex; align-items: center;
+  height: 28px;
 }
-.nav__brand .mark{
-  width: 32px; height: auto;
-  display: inline-block;
+.nav__brand img{
+  height: 100%; width: auto; display: block;
 }
-.nav__brand .mark img{ width: 100%; height: auto; display: block; }
 .nav__links{
   display: flex; gap: var(--space-8); justify-content: center;
   font-size: var(--text-sm); color: var(--fg-muted);
@@ -358,7 +354,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 .hero__title .strike::after{
   content:""; position: absolute;
-  left: -2%; right: -2%; top: 56%;
+  left: -2%; right: -2%; bottom: -0.06em;
   height: 4px; background: var(--threshold-cyan);
   transform: scaleX(0); transform-origin: left center;
   animation: cutRight 520ms var(--ease-cut) 700ms forwards;
@@ -875,9 +871,8 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 
 <!-- ════════════ NAV ════════════ -->
 <nav class="nav" aria-label="主导航">
-  <a href="#top" class="nav__brand" aria-label="Frontis AI 首页">
-    <span class="mark" aria-hidden="true"><img src="assets/logo-mark.svg" alt="" /></span>
-    <span>Frontis AI</span>
+  <a href="#top" class="nav__brand" aria-label="Frontis AI · 衔远科技 首页">
+    <img src="assets/logo-horizontal-dark.svg" alt="Frontis AI · 衔远科技" />
   </a>
   <div class="nav__links">
     <a href="#problem">问题</a>
@@ -909,9 +904,9 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
         <div class="hero__eyebrow">BRAND PROPOSITION · 2026.Q2</div>
 
         <h1 class="hero__title">
-          <span class="line"><span>不是给你一个工具，</span></span>
-          <span class="line"><span>是<span class="strike">给你一支</span><span class="accent"> AI 专家团队。</span></span></span>
-          <span class="line"><span>和你的业务，一起生长。</span></span>
+          <span class="line"><span>衔远大观，</span></span>
+          <span class="line"><span>让企业<span class="strike">跃迁到</span></span></span>
+          <span class="line"><span class="accent">智能原生时代。</span></span>
         </h1>
 
         <p class="hero__lede">
