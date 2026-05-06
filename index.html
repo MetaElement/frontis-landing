@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#000000" />
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
+
+<!-- Brand fonts (Space Grotesk + Space Mono via Google Fonts; Source Han Sans CN preferred locally, Noto Sans SC as cross-platform fallback) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <meta name="description" content="Frontis AI · 衔远科技 — 为企业打造一支可持续进化、云边端协同的 AI 专家团队。把通用大模型，转化为可持续进化的企业 AI 专家系统。" />
 <title>Frontis AI · 阈之上 — AI 原生企业的构建者</title>
 
@@ -16,19 +22,20 @@
   color-scheme: dark;
 
   /* ---------- BRAND ---------- */
-  /* Quantum Black / Threshold Cyan / Energy Orange / Residual / Pure / Structure */
-  --quantum-black:    oklch(0.00 0 0);            /* #000000 */
-  --quantum-near:     oklch(0.10 0.005 220);      /* near-black surface */
-  --quantum-deep:     oklch(0.06 0.005 220);
-  --threshold-cyan:   oklch(0.78 0.13 200);       /* #00C1D4 */
+  /* Aligned to Frontis VI tokens (colors_and_type.css + design rules v1.0) */
+  --quantum-black:    #0A0A0A;                    /* --bk · NOT pure #000 */
+  --quantum-near:     oklch(0.16 0.005 240);      /* near-black surface */
+  --quantum-deep:     oklch(0.10 0.005 240);
+  --threshold-cyan:   #00C1D4;                    /* --cy · 跃迁青 (the Edge) */
   --threshold-cyan-d: oklch(0.62 0.12 200);
   --threshold-cyan-l: oklch(0.92 0.06 200);
-  --energy-orange:    oklch(0.69 0.20 38);        /* #FA5F26 — once only */
-  --residual-light:   oklch(0.95 0.003 240);      /* #F0F2F4 */
-  --pure-white:       oklch(1.00 0 0);            /* #FFFFFF */
-  --structure-grey:   oklch(0.32 0.005 240);      /* #3D4145 */
+  --energy-orange:    #FA5F26;                    /* --or · 能量橙 (peak only) */
+  --residual-light:   #F0F2F4;                    /* --g1 */
+  --pure-white:       #FFFFFF;
+  --structure-grey:   #3D4145;                    /* --g2 */
   --structure-mid:    oklch(0.22 0.005 240);
   --structure-line:   oklch(0.18 0.005 240);
+  --mid-grey:         #8C8C8C;                    /* --mg · captions */
 
   /* ---------- SURFACE ALIASES ---------- */
   --bg:           var(--quantum-black);
@@ -120,16 +127,16 @@ body{
   background: var(--bg);
   color: var(--fg);
   font-family:
-    "PP Neue Montreal", "Aktiv Grotesk", "Inter Tight",
-    "HarmonyOS Sans SC", "Source Han Sans SC", "PingFang SC",
-    "Noto Sans CJK SC", system-ui, -apple-system, "Segoe UI",
-    Roboto, sans-serif;
+    "Space Grotesk", "PP Neue Montreal", "Aktiv Grotesk", "Inter Tight",
+    "Source Han Sans CN", "Noto Sans SC",
+    "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei",
+    system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: var(--text-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "ss01","ss02","cv11","tnum";
+  font-feature-settings: "ss01","ss02","tnum";
   overflow-x: hidden;
 }
 img,svg,canvas{ display:block; max-width:100%; }
@@ -137,11 +144,10 @@ a{ color: inherit; text-decoration: none; }
 button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer; padding:0; }
 ::selection{ background: var(--threshold-cyan); color: var(--quantum-black); }
 
-/* mono / data */
+/* mono / data — Space Mono is the Frontis brand mono */
 .mono{
-  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular,
-    Menlo, Consolas, monospace;
-  font-feature-settings: "ss01","cv01","cv02";
+  font-family: "Space Mono", "JetBrains Mono", "IBM Plex Mono",
+    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing: 0.02em;
 }
 
@@ -158,7 +164,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 .section + .section{ border-top: 1px solid var(--border); }
 
 .eyebrow{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -192,15 +198,17 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 
 /* ============================================================
    THE EDGE (signature horizontal cyan line, must bleed)
+   3px per Frontis VI tokens (--bar-height: 3px)
    ============================================================ */
 .edge{
   position: relative;
-  height: 1px;
+  height: 3px;
   background: var(--threshold-cyan);
   width: 100%;
   margin: 0;
   transform-origin: left center;
 }
+.edge--thin{ height: 1px; }
 .edge--reveal{
   transform: scaleX(0);
   transition: transform var(--d-ceremony) var(--ease-cut);
@@ -225,20 +233,16 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   border-bottom: 1px solid var(--border);
 }
 .nav__brand{
-  display: inline-flex; align-items: center; gap: 10px;
-  font-weight: 800; letter-spacing: -0.01em;
+  display: inline-flex; align-items: center; gap: 12px;
+  font-weight: 700; letter-spacing: -0.005em;
   font-size: var(--text-base);
+  font-family: "Space Grotesk", system-ui, sans-serif;
 }
 .nav__brand .mark{
-  width: 22px; height: 22px;
-  display: inline-block; position: relative;
-  background: var(--quantum-black);
-  border: 1px solid var(--threshold-cyan);
+  width: 32px; height: auto;
+  display: inline-block;
 }
-.nav__brand .mark::after{
-  content:""; position:absolute; left:-1px; right:-1px;
-  top: 50%; height: 1px; background: var(--threshold-cyan);
-}
+.nav__brand .mark img{ width: 100%; height: auto; display: block; }
 .nav__links{
   display: flex; gap: var(--space-8); justify-content: center;
   font-size: var(--text-sm); color: var(--fg-muted);
@@ -292,7 +296,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 .hero__rail{
   position: relative; z-index: 3;
   display: flex; justify-content: space-between;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -317,7 +321,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 
 .hero__eyebrow{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -444,7 +448,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 .stat__num .plus{ color: var(--threshold-cyan); }
 .stat__label{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -523,7 +527,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   align-items: start;
 }
 .problem__row .idx{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   color: var(--threshold-cyan);
   letter-spacing: 0.1em;
@@ -564,7 +568,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   display: flex; flex-direction: column; gap: var(--space-3);
 }
 .threshold__tag{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -634,7 +638,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 .arch__layer:hover{ background: var(--quantum-near); }
 .arch__layer .num{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   letter-spacing: 0.18em;
   color: var(--threshold-cyan);
@@ -653,7 +657,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   max-width: 60ch;
 }
 .arch__layer .badge{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -686,7 +690,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 .assets__big .num.cyan{ color: var(--threshold-cyan); }
 .assets__big .label{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.20em;
@@ -729,7 +733,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   margin: 0;
 }
 .asset__count{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   color: var(--threshold-cyan);
   letter-spacing: 0.14em;
@@ -762,7 +766,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 .compare__cell:nth-child(3n){ border-right: 0; }
 .compare__cell:nth-child(-n+3){ border-top: 0; }
 .compare__head{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -836,13 +840,14 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 }
 @media (max-width: 760px){ .foot__row{ grid-template-columns: 1fr; } }
 .foot__brand{
-  font-size: var(--text-2xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--fg);
+  display: block;
+  width: clamp(220px, 28vw, 320px);
+  height: auto;
+  margin-bottom: var(--space-3);
 }
+.foot__brand img{ width: 100%; height: auto; display: block; }
 .foot__meta{
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: "Space Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -871,7 +876,7 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 <!-- ════════════ NAV ════════════ -->
 <nav class="nav" aria-label="主导航">
   <a href="#top" class="nav__brand" aria-label="Frontis AI 首页">
-    <span class="mark" aria-hidden="true"></span>
+    <span class="mark" aria-hidden="true"><img src="assets/logo-mark.svg" alt="" /></span>
     <span>Frontis AI</span>
   </a>
   <div class="nav__links">
@@ -1171,9 +1176,9 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
   <div class="shell">
     <div class="foot__row">
       <div>
-        <div class="foot__brand">Frontis AI</div>
-        <p style="max-width: 48ch; margin: var(--space-3) 0 0;">
-          衔远科技 · AI 原生企业的构建者。把通用大模型，转化为可持续进化的企业 AI 专家系统。
+        <div class="foot__brand"><img src="assets/logo-horizontal-dark.svg" alt="Frontis AI · 衔远科技" /></div>
+        <p style="max-width: 48ch; margin: 0;">
+          AI 原生企业的构建者。把通用大模型，转化为可持续进化的企业 AI 专家系统。
         </p>
       </div>
       <div class="foot__meta">
@@ -1194,7 +1199,13 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
 (function(){
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Hero shockwave (one-time hard reveal) ---------- */
+  /* ---------- Hero canvas: brand-glyph echo ----------
+     Mirrors the Frontis horizontal logo geometry:
+       outline circle  =  the contained state
+       filled half-disc (lower) = before-state mass
+       cyan horizontal Edge bleeds across the entire hero
+     One-shot draw, no animation loop, no gradients, no particles.
+     ---------------------------------------------------- */
   const canvas = document.getElementById('heroCanvas');
   if (canvas){
     const ctx = canvas.getContext('2d', { alpha: true });
@@ -1211,61 +1222,66 @@ button{ font: inherit; color: inherit; background:none; border:0; cursor:pointer
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0,0,w,h);
 
-      // Background — pure black, structure feel
-      ctx.fillStyle = '#000';
+      // Background — Quantum Black per VI (#0A0A0A)
+      ctx.fillStyle = '#0A0A0A';
       ctx.fillRect(0,0,w,h);
 
-      // Eclipse corona — single high-contrast shockwave ring (no gradient mixed warm tones)
-      const cx = w * 0.34;
-      const cy = h * 0.55;
-      const baseR = Math.min(w,h) * 0.38;
+      // Geometry — large brand glyph anchored bottom-left, bleeding off-canvas
+      const r = Math.min(w, h) * 0.42;
+      const cx = w * 0.30;
+      const cy = h * 0.62;
 
-      // dark disc (the "before" mass)
+      // 1) Outline circle (the contained state) — white stroke, thin like brand mark
       ctx.beginPath();
-      ctx.arc(cx, cy, baseR, 0, Math.PI*2);
-      ctx.fillStyle = '#000';
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.lineWidth = 2 * dpr;
+      ctx.stroke();
+
+      // 2) Filled lower semicircle (before-state mass) — subtle white fill
+      //    The brand asset uses solid black, but on a black bg we use translucent
+      //    white to keep it perceptible without breaking dark-first hierarchy
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI, false);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.045)';
       ctx.fill();
 
-      // outer ring stack — thin, geometric
-      const rings = [
-        { r: baseR + 1*dpr,  c: 'rgba(0,193,212,0.95)', w: 1*dpr },
-        { r: baseR + 14*dpr, c: 'rgba(255,255,255,0.06)', w: 1*dpr },
-        { r: baseR + 32*dpr, c: 'rgba(255,255,255,0.04)', w: 1*dpr },
-        { r: baseR + 60*dpr, c: 'rgba(255,255,255,0.025)', w: 1*dpr },
+      // 3) Faint inner concentric structure rings (precision feel — Linear)
+      const innerRings = [
+        { r: r * 0.62, alpha: 0.04 },
+        { r: r * 0.42, alpha: 0.05 },
+        { r: r * 0.22, alpha: 0.07 },
       ];
-      rings.forEach(r=>{
+      innerRings.forEach(ring => {
         ctx.beginPath();
-        ctx.arc(cx, cy, r.r, 0, Math.PI*2);
-        ctx.strokeStyle = r.c;
-        ctx.lineWidth = r.w;
+        ctx.arc(cx, cy, ring.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,255,255,${ring.alpha})`;
+        ctx.lineWidth = 1 * dpr;
         ctx.stroke();
       });
 
-      // single 45° state-divider tick on the ring (precision marker)
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(-Math.PI*0.10);
-      ctx.beginPath();
-      ctx.moveTo(baseR - 4*dpr, 0);
-      ctx.lineTo(baseR + 18*dpr, 0);
-      ctx.strokeStyle = 'rgba(0,193,212,0.85)';
-      ctx.lineWidth = 1.5*dpr;
-      ctx.stroke();
-      ctx.restore();
+      // 4) THE EDGE — cyan horizontal line bleeds across full width
+      //    Sits on the circle's vertical centre so the brand glyph is "cut in half"
+      //    Stroke 4px to match topbar token (--accent-topbar)
+      ctx.fillStyle = '#00C1D4';
+      ctx.fillRect(0, cy - 2 * dpr, w, 4 * dpr);
 
-      // horizontal scan line — bleeds across (Frontis Edge motif)
-      const yEdge = Math.floor(h * 0.78);
-      ctx.fillStyle = 'rgba(0,193,212,0.55)';
-      ctx.fillRect(0, yEdge, w, 1*dpr);
-
-      // tiny structural ticks along the bottom — density at before-zone
-      ctx.fillStyle = 'rgba(255,255,255,0.18)';
-      const tickCount = 60;
+      // 5) Density ticks along the bottom (before-zone density)
+      ctx.fillStyle = 'rgba(255,255,255,0.16)';
+      const tickCount = 72;
       for (let i = 0; i < tickCount; i++){
         const x = (w / tickCount) * i;
-        const tH = (i % 5 === 0) ? 8*dpr : 4*dpr;
-        ctx.fillRect(x, h - tH, 1*dpr, tH);
+        const tH = (i % 6 === 0) ? 10 * dpr : (i % 2 === 0 ? 5 * dpr : 3 * dpr);
+        ctx.fillRect(x, h - tH, 1 * dpr, tH);
       }
+
+      // 6) Single 12px Energy Orange peak node — placed on the Edge,
+      //    one per composition per brand rule (and the CTA's peak is the other,
+      //    technically two appearances, but the canvas one is at large scale,
+      //    the CTA one at micro scale — they don't compete visually)
+      //    To stay strictly "one peak per layout", we omit the canvas orange
+      //    and rely on the CTA peak only.
     }
 
     window.addEventListener('resize', resize, { passive: true });
